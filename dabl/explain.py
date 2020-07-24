@@ -112,6 +112,11 @@ def explain(estimator, X_val=None, y_val=None, target_col=None,
 
     """
     figures = []
+
+    if feature_names is 'auto':
+        feature_names = ['feature_'+str(c) for c in range(estimator.n_features_)]
+
+
     if feature_names is None:
         try:
             feature_names = estimator.feature_names_.to_list()
@@ -137,6 +142,7 @@ def explain(estimator, X_val=None, y_val=None, target_col=None,
                                      do_clean=False)
 
         if classifier:
+            print("\033[1m Classification Report\033[0m\n")
             fig = plot_classification_metrics(estimator, X_val, y_val)
         else:
             fig = plot_regression_metrics(estimator, X_val, y_val)
@@ -150,7 +156,8 @@ def explain(estimator, X_val=None, y_val=None, target_col=None,
         except AttributeError:
             warn("Can't show tree depth, install scikit-learn 0.21"
                  " to show the full information.")
-        # FIXME !!! bug in plot_tree with integer class names
+        # FIXME !!! bug in plot_tree with integer class names 
+        # is this still an issue? looks like the list comprehension below fixes it
         class_names = [str(c) for c in estimator.classes_]
         plt.figure(figsize=(18, 10))
         plot_tree(inner_estimator, feature_names=inner_feature_names,
