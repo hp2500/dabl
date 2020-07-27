@@ -113,7 +113,7 @@ def explain(estimator, X_val=None, y_val=None, target_col=None,
     """
     figures = []
 
-    if feature_names is 'auto':
+    if feature_names == 'auto':
         feature_names = ['feature_'+str(c) for c in range(estimator.n_features_)]
 
 
